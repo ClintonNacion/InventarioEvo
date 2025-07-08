@@ -1,7 +1,9 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace WinFormsApp100
 {
@@ -10,18 +12,18 @@ namespace WinFormsApp100
         private readonly string rutaArchivo;
         private Dictionary<string, string> usuariosRegistrados;
 
+        private Dictionary<string, int> intentosFallidos = new();
+        private Dictionary<string, DateTime> usuariosBloqueados = new();
+        private readonly int MAX_INTENTOS = 3;
+        private readonly TimeSpan DURACION_BLOQUEO = TimeSpan.FromMinutes(1);
+
         public AutenticacionService()
         {
-            // Guardar el archivo en la misma carpeta que el ejecutable
             rutaArchivo = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "usuarios.txt");
-
             InicializarArchivoUsuarios();
             CargarUsuarios();
         }
 
-        /// <summary>
-        /// Crea el archivo usuarios.txt si no existe con un usuario por defecto.
-        /// </summary>
         private void InicializarArchivoUsuarios()
         {
             if (!File.Exists(rutaArchivo))
@@ -30,9 +32,6 @@ namespace WinFormsApp100
             }
         }
 
-        /// <summary>
-        /// Carga usuarios desde usuarios.txt al diccionario.
-        /// </summary>
         private void CargarUsuarios()
         {
             usuariosRegistrados = new Dictionary<string, string>();
@@ -49,18 +48,52 @@ namespace WinFormsApp100
             }
         }
 
-        /// <summary>
-        /// Verifica si las credenciales son correctas
-        /// </summary>
         public bool ValidarCredenciales(string usuario, string contraseña)
         {
-            return usuariosRegistrados.TryGetValue(usuario, out string pass)
+            if (usuariosBloqueados.ContainsKey(usuario))
+            {
+                if (DateTime.Now < usuariosBloqueados[usuario])
+                {
+                    return false;
+                }
+                else
+                {
+                    usuariosBloqueados.Remove(usuario);
+                    intentosFallidos[usuario] = 0;
+                }
+            }
+
+            bool valido = usuariosRegistrados.TryGetValue(usuario, out string pass)
                 && pass == contraseña;
+
+            if (valido)
+            {
+                intentosFallidos[usuario] = 0;
+                return true;
+            }
+            else
+            {
+                if (!intentosFallidos.ContainsKey(usuario))
+                    intentosFallidos[usuario] = 0;
+
+                intentosFallidos[usuario]++;
+
+                if (intentosFallidos[usuario] >= MAX_INTENTOS)
+                {
+                    usuariosBloqueados[usuario] = DateTime.Now + DURACION_BLOQUEO;
+                    MessageBox.Show("Se han realizado 3 intentos fallidos. Usuario bloqueado por 1 minuto.",
+                                    "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                return false;
+            }
         }
 
-        /// <summary>
-        /// Agrega un nuevo usuario al archivo y al diccionario.
-        /// </summary>
+        public bool EstaBloqueado(string usuario)
+        {
+            return usuariosBloqueados.ContainsKey(usuario) && DateTime.Now < usuariosBloqueados[usuario];
+        }
+
         public bool AgregarUsuario(string usuario, string contraseña)
         {
             if (usuariosRegistrados.ContainsKey(usuario))
@@ -71,9 +104,6 @@ namespace WinFormsApp100
             return true;
         }
 
-        /// <summary>
-        /// Devuelve una lista de los nombres de usuario.
-        /// </summary>
         public List<string> ObtenerUsuarios()
         {
             return usuariosRegistrados.Keys.ToList();

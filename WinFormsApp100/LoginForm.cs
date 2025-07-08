@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Windows.Forms;
 
 namespace WinFormsApp100
@@ -12,7 +13,6 @@ namespace WinFormsApp100
             InitializeComponent();
             authService = new AutenticacionService();
             this.AcceptButton = btnLogin;
-
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -20,11 +20,19 @@ namespace WinFormsApp100
             string usuario = txtUsuario.Text.Trim();
             string clave = txtPassword.Text;
 
+            if (authService.EstaBloqueado(usuario))
+            {
+                MessageBox.Show("El usuario ha sido bloqueado por 1 minuto tras 3 intentos fallidos.",
+                                "Usuario bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPassword.Clear();
+                txtPassword.Focus();
+                return;
+            }
+
             if (authService.ValidarCredenciales(usuario, clave))
             {
-               // MessageBox.Show("¡Bienvenido!", "Acceso concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.DialogResult = DialogResult.OK; // Señala que el login fue exitoso
-                this.Close();                        // Cierra solo el LoginForm
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
             else
             {
@@ -33,6 +41,5 @@ namespace WinFormsApp100
                 txtPassword.Focus();
             }
         }
-
     }
 }

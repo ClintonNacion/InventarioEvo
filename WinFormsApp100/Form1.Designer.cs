@@ -18,7 +18,7 @@ namespace WinFormsApp100
             }
             base.Dispose(disposing);
         }
-
+        //
         #region Código generado por el Diseñador de Windows Forms
 
         private void InitializeComponent()

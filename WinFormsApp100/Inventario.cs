@@ -14,7 +14,7 @@ public class Inventario : IInventario
         var existente = productos.FirstOrDefault(p => p.Nombre == producto.Nombre);
         if (existente != null)
         {
-            // Si ya existe, sumamos la cantidad y reactivamos el producto
+            // Si ya existe, sumamos la cantidad y reactivamos el producto//
             existente.Cantidad += producto.Cantidad;
             existente.Estado = EstadoProducto.Activo;
 

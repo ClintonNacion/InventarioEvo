@@ -21,7 +21,7 @@ namespace WinFormsApp100
             textBoxLogs = new Label();
             SuspendLayout();
             // 
-            // txtLogs
+            // txtLog
             // 
             txtLogs.Dock = DockStyle.Fill;
             txtLogs.Font = new Font("Consolas", 10F);

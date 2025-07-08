@@ -16,7 +16,7 @@ namespace WinFormsApp100
             reporteInventario = new ReporteInventario();
             persistencia = new PersistenciaInventario();
 
-            // Cargar productos al iniciar
+            // Cargar productos al  iniciar
             var productosCargados = persistencia.CargarInventario();
             inventario.CargarInventario(productosCargados);
             ActualizarLista();

@@ -13,5 +13,5 @@ namespace WinFormsApp100
         List<Producto> ObtenerInventario();
         void CargarInventario(List<Producto> productos);
     }
-
+    //
 }

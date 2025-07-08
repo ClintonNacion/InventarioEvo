@@ -10,7 +10,7 @@ namespace WinFormsApp100
         {
             ApplicationConfiguration.Initialize();
 
-            // Mostrar formulario de login primero
+            // Mostrar formulario de login primero//
             LoginForm loginForm = new LoginForm();
 
             if (loginForm.ShowDialog() == DialogResult.OK)

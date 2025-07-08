@@ -19,7 +19,7 @@ namespace WinFormsApp100
 
         public void CargarLogs(string logs)
         {
-            txtLogs.Text = logs;  // textBoxLogs es el TextBox que pusiste para mostrar los logs
+            txtLogs.Text = logs;  // textBoxLogs es el TextBox que pusiste para mostrar los log
         }
 
         private void lblNombre_Click(object sender, EventArgs e)

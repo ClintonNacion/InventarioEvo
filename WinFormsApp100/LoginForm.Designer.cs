@@ -14,6 +14,7 @@ namespace WinFormsApp100
         private GroupBox groupBoxLogin;
         private Label lblTitulo;
         private PictureBox picVerClave;
+        private CheckBox chkRecordarme; // ✅ NUEVO
 
         protected override void Dispose(bool disposing)
         {
@@ -35,6 +36,7 @@ namespace WinFormsApp100
             groupBoxLogin = new GroupBox();
             lblTitulo = new Label();
             picVerClave = new PictureBox();
+            chkRecordarme = new CheckBox(); // ✅ Inicializado
             groupBoxLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(picVerClave)).BeginInit();
             SuspendLayout();
@@ -52,7 +54,7 @@ namespace WinFormsApp100
             txtPassword.TabIndex = 3;
             txtPassword.UseSystemPasswordChar = true;
 
-            // picVerClave (botón mostrar/ocultar clave)
+            // picVerClave
             picVerClave.Location = new Point(394, 69);
             picVerClave.Name = "picVerClave";
             picVerClave.Size = new Size(24, 24);
@@ -75,11 +77,19 @@ namespace WinFormsApp100
             lblPassword.TabIndex = 2;
             lblPassword.Text = "Contraseña:";
 
+            // chkRecordarme ✅
+            chkRecordarme.Location = new Point(149, 102);
+            chkRecordarme.Name = "chkRecordarme";
+            chkRecordarme.Size = new Size(180, 20);
+            chkRecordarme.TabIndex = 5;
+            chkRecordarme.Text = "Recordarme";
+            chkRecordarme.UseVisualStyleBackColor = true;
+
             // btnLogin
-            btnLogin.Location = new Point(149, 115);
+            btnLogin.Location = new Point(149, 130);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(103, 33);
-            btnLogin.TabIndex = 4;
+            btnLogin.TabIndex = 6;
             btnLogin.Text = "Iniciar sesión";
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
@@ -89,11 +99,12 @@ namespace WinFormsApp100
             groupBoxLogin.Controls.Add(txtUsuario);
             groupBoxLogin.Controls.Add(lblPassword);
             groupBoxLogin.Controls.Add(txtPassword);
-            groupBoxLogin.Controls.Add(picVerClave); // 👈 ojo aquí
+            groupBoxLogin.Controls.Add(picVerClave);
+            groupBoxLogin.Controls.Add(chkRecordarme); // ✅ agregado al GroupBox
             groupBoxLogin.Controls.Add(btnLogin);
             groupBoxLogin.Location = new Point(14, 45);
             groupBoxLogin.Name = "groupBoxLogin";
-            groupBoxLogin.Size = new Size(429, 170);
+            groupBoxLogin.Size = new Size(429, 180);
             groupBoxLogin.TabIndex = 0;
             groupBoxLogin.TabStop = false;
 
@@ -109,7 +120,7 @@ namespace WinFormsApp100
             // LoginForm
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(460, 230);
+            ClientSize = new Size(460, 245);
             Controls.Add(lblTitulo);
             Controls.Add(groupBoxLogin);
             Name = "LoginForm";

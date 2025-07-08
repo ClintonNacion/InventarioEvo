@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace WinFormsApp100
@@ -19,6 +20,14 @@ namespace WinFormsApp100
         private void LoginForm_Load(object sender, EventArgs e)
         {
             txtPassword.UseSystemPasswordChar = true;
+
+            // Cargar usuario recordado
+            if (File.Exists("recordar.txt"))
+            {
+                string usuario = File.ReadAllText("recordar.txt");
+                txtUsuario.Text = usuario;
+                chkRecordarme.Checked = true;
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -37,6 +46,12 @@ namespace WinFormsApp100
 
             if (authService.ValidarCredenciales(usuario, clave))
             {
+                // Guardar usuario si está marcado "Recordarme"
+                if (chkRecordarme.Checked)
+                    File.WriteAllText("recordar.txt", usuario);
+                else if (File.Exists("recordar.txt"))
+                    File.Delete("recordar.txt");
+
                 MessageBox.Show("¡Bienvenido!", "Acceso concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -53,8 +68,6 @@ namespace WinFormsApp100
         {
             claveVisible = !claveVisible;
             txtPassword.UseSystemPasswordChar = !claveVisible;
-
-            // (Opcional: puedes agregar imágenes en el futuro)
             picVerClave.BackColor = claveVisible ? Color.LightGray : Color.Transparent;
         }
     }

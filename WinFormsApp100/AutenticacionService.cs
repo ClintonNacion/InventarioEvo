@@ -50,7 +50,7 @@ namespace WinFormsApp100
         }
 
         /// <summary>
-        /// Verifica si las credenciales son correctas.
+        /// Verifica si las credenciales son correctas
         /// </summary>
         public bool ValidarCredenciales(string usuario, string contraseña)
         {
